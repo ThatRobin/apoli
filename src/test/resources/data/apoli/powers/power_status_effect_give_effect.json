@@ -1,0 +1,10 @@
+{
+	"type": "apoli:active_self",
+	"key": {
+		"key": "key.use"
+	},
+	"entity_action": {
+		"type": "apoli:trigger_cooldown",
+		"power": "apoli:power_status_effect"
+	}
+}

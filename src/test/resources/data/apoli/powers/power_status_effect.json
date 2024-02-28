@@ -1,0 +1,18 @@
+{
+	"type": "apoli:power_status_effect",
+	"cooldown": 1200,
+	"interval": 60,
+	"action_over_time": {
+		"type": "apoli:chance",
+		"action": {
+			"type": "apoli:spawn_entity",
+			"entity_type": "minecraft:endermite"
+		},
+		"chance": 0.4
+	},
+	"texture_map": {
+		"apoli:mob_effect/icon": "apoli:mob_effect/icon"
+	},
+	"name": "Enditis",
+	"description": "You have disease :("
+}
