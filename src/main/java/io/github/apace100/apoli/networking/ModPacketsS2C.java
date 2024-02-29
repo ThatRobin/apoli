@@ -2,6 +2,7 @@ package io.github.apace100.apoli.networking;
 
 import io.github.apace100.apoli.Apoli;
 import io.github.apace100.apoli.component.PowerHolderComponent;
+import io.github.apace100.apoli.mixin.MinecraftClientAccessor;
 import io.github.apace100.apoli.networking.packet.VersionHandshakePacket;
 import io.github.apace100.apoli.networking.packet.s2c.*;
 import io.github.apace100.apoli.power.Power;
@@ -14,14 +15,20 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworkin
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.resource.ResourcePack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Unit;
+import net.minecraft.util.Util;
 
+import java.util.List;
 import java.util.OptionalInt;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -85,6 +92,10 @@ public class ModPacketsS2C {
     }
 
     private static void onPowerTypeRegistrySync(SyncPowerTypeRegistryS2CPacket packet, ClientPlayerEntity player, PacketSender responseSender) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        List<ResourcePack> list = client.getResourcePackManager().createResourcePacks();
+        ((MinecraftClientAccessor)client).getResourceManager().reload(Util.getMainWorkerExecutor(), client, CompletableFuture.completedFuture(Unit.INSTANCE), list);
+
         PowerTypeRegistry.clear();
         packet.powers().forEach(PowerTypeRegistry::register);
     }

@@ -1,0 +1,10 @@
+{
+	"type": "apoli:modify_item_render",
+	"model": "apoli:custom_item",
+	"item_condition": {
+		"type": "apoli:ingredient",
+		"ingredient": {
+			"item": "minecraft:egg"
+		}
+	}
+}
