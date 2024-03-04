@@ -1,9 +1,13 @@
 package io.github.apace100.apoli.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.apace100.apoli.access.PowerCraftingInventory;
+import io.github.apace100.apoli.access.PowerModifiedGrindstone;
+import io.github.apace100.apoli.access.ScreenHandlerUsabilityOverride;
 import io.github.apace100.apoli.access.SlotState;
 import io.github.apace100.apoli.power.ModifyCraftingPower;
+import io.github.apace100.apoli.power.ModifyGrindstonePower;
 import io.github.apace100.apoli.util.InventoryUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
@@ -21,17 +25,33 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
+
 @Mixin(CraftingScreenHandler.class)
-public abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<RecipeInputInventory> {
+public abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<RecipeInputInventory> implements ScreenHandlerUsabilityOverride {
 
     @Shadow
     @Final
     private RecipeInputInventory input;
+
+    @Unique
+    private boolean apoli$canUse = false;
+
+    @Override
+    public boolean apoli$canUse() {
+        return this.apoli$canUse;
+    }
+
+    @Override
+    public void apoli$canUse(boolean canUse) {
+        this.apoli$canUse = canUse;
+    }
 
     public CraftingScreenHandlerMixin(ScreenHandlerType<?> screenHandlerType, int i) {
         super(screenHandlerType, i);
@@ -44,6 +64,11 @@ public abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHan
             ((PowerCraftingInventory) craftingInventory).apoli$setPower(null);
         }
 
+    }
+
+    @ModifyReturnValue(method = "canUse", at = @At("RETURN"))
+    private boolean apoli$allowUsingViaPower(boolean original, PlayerEntity playerEntity) {
+        return original || this.apoli$canUse();
     }
 
     @ModifyVariable(method = "quickMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;copy()Lnet/minecraft/item/ItemStack;", shift = At.Shift.AFTER), ordinal = 1)

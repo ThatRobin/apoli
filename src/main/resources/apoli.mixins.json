@@ -50,7 +50,6 @@
 		"LootDataLookupMixin",
 		"LootTableMixin",
 		"MobEntityMixin",
-		"MultiContainerScreenHandlerMixin",
 		"PhantomSpawnerMixin",
 		"PlayerEntityMixin",
 		"PlayerScreenHandlerAccessor",

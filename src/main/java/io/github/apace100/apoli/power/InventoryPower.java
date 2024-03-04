@@ -1,7 +1,6 @@
 package io.github.apace100.apoli.power;
 
 import io.github.apace100.apoli.Apoli;
-import io.github.apace100.apoli.access.ScreenHandlerUsabilityOverride;
 import io.github.apace100.apoli.data.ApoliDataTypes;
 import io.github.apace100.apoli.power.factory.PowerFactory;
 import io.github.apace100.calio.data.SerializableData;
@@ -42,38 +41,22 @@ public class InventoryPower extends Power implements Active, Inventory {
         switch (containerType) {
             case DOUBLE_CHEST:
                 containerSize = 54;
-                this.containerScreen = (i, playerInventory, playerEntity) -> {
-                    GenericContainerScreenHandler handler = new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X6, i,
-                            playerInventory, this, 6);
-                    ((ScreenHandlerUsabilityOverride) handler).apoli$canUse(true);
-                    return handler;
-                };
+                this.containerScreen = (i, playerInventory, playerEntity) -> new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X6, i,
+                        playerInventory, this, 6);
                 break;
             case CHEST:
                 containerSize = 27;
-                this.containerScreen = (i, playerInventory, playerEntity) -> {
-                    GenericContainerScreenHandler handler = new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X3, i,
-                            playerInventory, this, 3);
-                    ((ScreenHandlerUsabilityOverride) handler).apoli$canUse(true);
-                    return handler;
-                };
+                this.containerScreen = (i, playerInventory, playerEntity) -> new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X3, i,
+                        playerInventory, this, 3);
                 break;
             case HOPPER:
                 containerSize = 5;
-                this.containerScreen = (i, playerInventory, playerEntity) -> {
-                    HopperScreenHandler handler = new HopperScreenHandler(i, playerInventory, this);
-                    ((ScreenHandlerUsabilityOverride) handler).apoli$canUse(true);
-                    return handler;
-                };
+                this.containerScreen = (i, playerInventory, playerEntity) -> new HopperScreenHandler(i, playerInventory, this);
                 break;
             case DROPPER, DISPENSER:
             default:
                 containerSize = 9;
-                this.containerScreen = (i, playerInventory, playerEntity) -> {
-                    Generic3x3ContainerScreenHandler handler = new Generic3x3ContainerScreenHandler(i, playerInventory, this);
-                    ((ScreenHandlerUsabilityOverride) handler).apoli$canUse(true);
-                    return handler;
-                };
+                this.containerScreen = (i, playerInventory, playerEntity) -> new Generic3x3ContainerScreenHandler(i, playerInventory, this);
                 break;
         }
         this.container = DefaultedList.ofSize(containerSize, ItemStack.EMPTY);
@@ -178,7 +161,7 @@ public class InventoryPower extends Power implements Active, Inventory {
 
     @Override
     public boolean canPlayerUse(PlayerEntity player) {
-        return player == this.entity;
+        return true;
     }
 
     @Override
