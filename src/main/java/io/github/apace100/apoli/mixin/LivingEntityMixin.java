@@ -294,6 +294,15 @@ public abstract class LivingEntityMixin extends Entity implements ModifiableFood
         PowerHolderComponent.getPowers(source.getAttacker(), SelfActionOnKillPower.class).forEach(p -> p.onKill((LivingEntity)(Object)this, source, amount));
     }
 
+    @Inject(method = "drop", at = @At("TAIL"))
+    private void dropInventoryPower(DamageSource source, CallbackInfo ci) {
+        PowerHolderComponent.getPowers(this, InventoryPower.class).forEach(inventoryPower -> {
+            if(inventoryPower.shouldDropOnDeath()) {
+                inventoryPower.dropItemsOnDeath();
+            }
+        });
+    }
+
     @Redirect(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isWet()Z"))
     private boolean preventExtinguishingFromSwimming(LivingEntity livingEntity) {
         if(PowerHolderComponent.hasPower(livingEntity, SwimmingPower.class) && livingEntity.isSwimming() && !(getFluidHeight(FluidTags.WATER) > 0)) {

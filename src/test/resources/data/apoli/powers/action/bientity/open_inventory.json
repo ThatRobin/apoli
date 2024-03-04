@@ -1,0 +1,18 @@
+{
+	"type": "apoli:multiple",
+	"inventory": {
+		"type": "apoli:inventory",
+		"container_type": "dropper",
+		"drop_on_death": true,
+		"key": {
+			"key": "key.use"
+		}
+	},
+	"usable": {
+		"type": "apoli:action_on_being_used",
+		"bientity_action": {
+			"type": "apoli:open_inventory",
+			"power": "*:*_inventory"
+		}
+	}
+}
