@@ -1,4 +1,4 @@
-package io.github.apace100.apoli.mixin;
+package io.github.apace100.apoli.mixin.integration.connector;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import io.github.apace100.apoli.power.EdibleItemPower;
@@ -8,17 +8,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.points.BeforeConstant;
 
 @Mixin(HeldItemRenderer.class)
 public abstract class HeldItemRendererMixin {
-
-    @ModifyExpressionValue(method = "renderFirstPersonItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z", ordinal = 1))
+/*
+    @ModifyExpressionValue(method = "renderFirstPersonItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private boolean apoli$overrideSpecialTransforms(boolean original, AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack stack) {
         return original && EdibleItemPower.get(stack)
             .map(EdibleItemPower::getFoodComponent)
             .map(fc -> player.canConsume(fc.canAlwaysEat()))
             .orElse(true);
     }
-
+ */
 }

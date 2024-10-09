@@ -57,20 +57,22 @@ public class ServerPlayerInteractionManagerMixin {
         modifiedCanHarvestRef.set(false);
     }
 
-    @ModifyExpressionValue(method = "tryBreakBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;canHarvest(Lnet/minecraft/block/BlockState;)Z"))
-    private boolean apoli$modifyEffectiveTool(boolean original, @Share("cachedMinedBlock") LocalRef<SavedBlockPosition> cachedMinedBlockRef, @Share("modifiedCanHarvest") LocalBooleanRef modifiedCanHarvestRef) {
+
+    @Inject(method = "tryBreakBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;postMine(Lnet/minecraft/world/World;Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/PlayerEntity;)V"))
+    private void apoli$modifyEffectiveTool(BlockPos pos, CallbackInfoReturnable<Boolean> cir, @Local(ordinal=1,print = true) LocalBooleanRef bl2, @Share("cachedMinedBlock") LocalRef<SavedBlockPosition> cachedMinedBlockRef, @Share("modifiedCanHarvest") LocalBooleanRef modifiedCanHarvestRef) {
 
         boolean result = PowerHolderComponent.getPowers(this.player, ModifyHarvestPower.class)
-            .stream()
-            .filter(mhp -> mhp.doesApply(cachedMinedBlockRef.get()))
-            .max(ModifyHarvestPower::compareTo)
-            .map(ModifyHarvestPower::isHarvestAllowed)
-            .orElse(original);
+                .stream()
+                .filter(mhp -> mhp.doesApply(cachedMinedBlockRef.get()))
+                .max(ModifyHarvestPower::compareTo)
+                .map(ModifyHarvestPower::isHarvestAllowed)
+                .orElse(bl2.get());
 
         modifiedCanHarvestRef.set(result);
-        return result;
+        bl2.set(result);
 
     }
+
 
     @Unique
     private Direction apoli$blockBreakDirection;

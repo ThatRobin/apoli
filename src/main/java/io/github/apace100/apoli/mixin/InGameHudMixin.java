@@ -45,6 +45,7 @@ public abstract class InGameHudMixin {
 
     }
 
+
     @Unique
     private static Optional<OverrideHudTexturePower> apoli$getOverrideHudTexturePower(PlayerEntity player) {
         return PowerHolderComponent.getPowers(player, OverrideHudTexturePower.class)

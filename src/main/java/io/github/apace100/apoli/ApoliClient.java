@@ -1,6 +1,7 @@
 package io.github.apace100.apoli;
 
 import io.github.apace100.apoli.integration.PowerIntegrationClient;
+import io.github.apace100.apoli.mixin.LayeredDrawerAccessor;
 import io.github.apace100.apoli.networking.ModPacketsS2C;
 import io.github.apace100.apoli.networking.packet.c2s.UseActivePowersC2SPacket;
 import io.github.apace100.apoli.power.Active;
@@ -16,6 +17,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.mixin.client.rendering.InGameHudMixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -53,6 +56,12 @@ public class ApoliClient implements ClientModInitializer {
 		PowerIntegrationClient.register();
 
 		GameHudRender.HUD_RENDERS.add(new PowerHudRenderer());
+
+		HudRenderCallback.EVENT.register((drawContext, tickCounter) -> {
+			for (GameHudRender hudRender : GameHudRender.HUD_RENDERS) {
+				hudRender.render(drawContext, tickCounter);
+			}
+		});
 
 		AutoConfig.register(ApoliConfigClient.class, JanksonConfigSerializer::new);
 		Apoli.config = AutoConfig.getConfigHolder(ApoliConfigClient.class).getConfig();

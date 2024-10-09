@@ -10,9 +10,13 @@ import java.util.Set;
 
 public class ApoliMixinPlugin implements IMixinConfigPlugin {
 
+    private boolean isConnectorLoaded = false;
+    private boolean isAppleskinLoaded = false;
+
     @Override
     public void onLoad(String mixinPackage) {
-
+        isConnectorLoaded = FabricLoader.getInstance().isModLoaded("connector");
+        isAppleskinLoaded = FabricLoader.getInstance().isModLoaded("appleskin");
     }
 
     @Override
@@ -22,12 +26,20 @@ public class ApoliMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		return !mixinClassName.contains(".integration.appleskin.") || FabricLoader.getInstance().isModLoaded("appleskin");
+        if (mixinClassName.contains(".mixin.ElytraFeatureRendererMixin") || mixinClassName.contains(".mixin.HeldItemRendererMixin") || mixinClassName.contains(".mixin.InGameHudMixin")) {
+            return !isConnectorLoaded;
+        }
+        if (mixinClassName.contains(".mixin.integration.connector")) {
+            return isConnectorLoaded;
+        }
+        if (mixinClassName.contains(".mixin.integration.appleskin")) {
+            return isAppleskinLoaded;
+        }
+        return true;
     }
 
     @Override
     public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
-
     }
 
     @Override

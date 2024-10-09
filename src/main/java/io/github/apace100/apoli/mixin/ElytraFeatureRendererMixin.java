@@ -17,10 +17,10 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(ElytraFeatureRenderer.class)
 public class ElytraFeatureRendererMixin {
 
+
     @ModifyExpressionValue(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/entity/LivingEntity;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private boolean apoli$wearingElytraProxy(boolean original, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, LivingEntity entity) {
-        return original
-            || PowerHolderComponent.hasPower(entity, ElytraFlightPower.class, ElytraFlightPower::shouldRenderElytra);
+        return original || PowerHolderComponent.hasPower(entity, ElytraFlightPower.class, ElytraFlightPower::shouldRenderElytra);
     }
 
     @WrapOperation(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/entity/LivingEntity;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/RenderLayer;getArmorCutoutNoCull(Lnet/minecraft/util/Identifier;)Lnet/minecraft/client/render/RenderLayer;"))

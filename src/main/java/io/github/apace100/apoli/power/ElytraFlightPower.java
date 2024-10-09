@@ -30,8 +30,12 @@ public class ElytraFlightPower extends Power {
     }
 
     public static PowerFactory createFactory() {
-        EntityElytraEvents.CUSTOM.register((livingEntity, b) ->
-            PowerHolderComponent.hasPower(livingEntity, ElytraFlightPower.class));
+        EntityElytraEvents.CUSTOM.register((livingEntity, b) -> {
+            if(PowerHolderComponent.hasPower(livingEntity, ElytraFlightPower.class)) {
+                Apoli.LOGGER.info("Invoked Event");
+            }
+            return true;
+        });
 
         return new PowerFactory<>(Apoli.identifier("elytra_flight"),
             new SerializableData()

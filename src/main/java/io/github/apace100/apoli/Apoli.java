@@ -11,6 +11,7 @@ import io.github.apace100.apoli.global.GlobalPowerSetLoader;
 import io.github.apace100.apoli.integration.PowerIntegration;
 import io.github.apace100.apoli.networking.ModPackets;
 import io.github.apace100.apoli.networking.ModPacketsC2S;
+import io.github.apace100.apoli.power.ElytraFlightPower;
 import io.github.apace100.apoli.power.PowerTypes;
 import io.github.apace100.apoli.power.factory.PowerFactories;
 import io.github.apace100.apoli.power.factory.action.BiEntityActions;

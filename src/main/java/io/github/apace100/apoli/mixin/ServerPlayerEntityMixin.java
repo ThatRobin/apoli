@@ -84,10 +84,10 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
     @Shadow public abstract boolean isSpawnForced();
 
     @Shadow public abstract float getSpawnAngle();
-
     @Shadow private float spawnAngle;
 
-    @Inject(method = "trySleep", at = @At(value = "INVOKE",target = "Lnet/minecraft/server/network/ServerPlayerEntity;setSpawnPoint(Lnet/minecraft/registry/RegistryKey;Lnet/minecraft/util/math/BlockPos;FZZ)V"), cancellable = true)
+    // TODO: Verify functionality of prevent sleep.
+    @Inject(method = "trySleep", at = @At("HEAD"), cancellable = true)
     public void preventSleep(BlockPos pos, CallbackInfoReturnable<Either<SleepFailureReason, Unit>> info) {
 
         LinkedList<PreventSleepPower> preventSleepPowers = PowerHolderComponent.getPowers(this, PreventSleepPower.class)

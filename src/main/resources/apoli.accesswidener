@@ -21,3 +21,5 @@ accessible field net/minecraft/entity/player/ItemCooldownManager$Entry endTick I
 accessible class net/minecraft/client/toast/ToastManager$Entry
 accessible class net/minecraft/server/network/ServerPlayerEntity$RespawnPos
 accessible class net/minecraft/screen/slot/ArmorSlot
+accessible field net/minecraft/entity/Entity FALL_FLYING_FLAG_INDEX I
+accessible method net/minecraft/entity/Entity setFlag (IZ)V

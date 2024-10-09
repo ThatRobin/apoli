@@ -89,7 +89,9 @@ public class PowerTypes extends IdentifiableMultiJsonDataLoader implements Ident
             if (joined) {
 
                 List<ServerPlayerEntity> players = player.getServerWorld().getServer().getPlayerManager().getPlayerList();
-                players.remove(player);
+                if(players.contains(player)) {
+                    players.remove(player);
+                }
 
                 players.forEach(otherPlayer -> {
                     PowerHolderComponent.KEY.syncWith(otherPlayer, (ComponentProvider) player);
